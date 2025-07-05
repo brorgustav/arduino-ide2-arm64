@@ -28,4 +28,17 @@ export npm_config_python=$(which python3)
 export npm_config_build_from_source=false
 
 yarn install --network-concurrency=4 --mutex network
+
+sudo apt remove --purge golang-go
+sudo rm -rf /usr/local/go
+
+cd ~
+wget https://go.dev/dl/go1.22.3.linux-arm64.tar.gz
+sudo tar -C /usr/local -xzf go1.22.3.linux-arm64.tar.gz
+
+export PATH=$PATH:/usr/local/go/bin
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+
+source ~/.bashrc
 ```
