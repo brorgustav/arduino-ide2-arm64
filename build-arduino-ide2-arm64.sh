@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-# 🧰 Arduino IDE 2.x Build Script for Raspberry Pi (64-bit)
-# Target: Raspberry Pi OS ARM64 with GUI
-# Author: AirysDark (optimized by ChatGPT)
+# 🧰 Arduino IDE 2.x Build Script for Raspberry Pi OS ARM64
+# Author: AirysDark (with fixes from ChatGPT)
+# Updated: Includes native-keymap build fixes
 
 echo "🔧 Updating system..."
 sudo apt update && sudo apt upgrade -y
@@ -11,23 +11,30 @@ sudo apt update && sudo apt upgrade -y
 echo "📦 Installing required packages..."
 sudo apt install -y git curl build-essential \
     libgtk-3-dev libnss3 libxss1 libasound2 \
-    desktop-file-utils libudev-dev \
-    python3 python3-pip golang-go \
-    nodejs npm xz-utils
+    desktop-file-utils libudev-dev xz-utils \
+    python3 python3-pip golang-go nodejs npm \
+    libx11-dev libxtst-dev libxkbfile-dev
 
-echo "⬆️  Ensuring recent Node.js version (v18)..."
+echo "⬆️  Installing recent Node.js v18..."
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 
 echo "📥 Installing Yarn..."
 sudo npm install -g yarn
 
-echo "📁 Cloning Arduino IDE source..."
-git clone --depth 1 https://github.com/AirysDark/arduino-ide.git
-cd arduino-ide
+echo "🔧 Configuring Python for node-gyp..."
+npm config set python $(which python3)
+npm config set build_from_source false
 
-echo "📦 Installing Node.js/Electron dependencies..."
-yarn install --frozen-lockfile --network-concurrency=4 --mutex network
+echo "📁 Cloning Arduino IDE source..."
+git clone --depth 1 https://github.com/AirysDark/arduino-ide.git arduino-ide-arm64
+cd arduino-ide-arm64
+
+echo "🧹 Cleaning previous installs (if any)..."
+rm -rf node_modules yarn.lock
+
+echo "📦 Installing Node.js/Electron dependencies (with native module fixes)..."
+yarn install --network-concurrency=4 --mutex network
 
 echo "📦 Adding electron-builder..."
 yarn add electron-builder --dev
@@ -65,5 +72,5 @@ sudo ln -sf /opt/arduino-ide-arm64/arduino-ide.png /usr/share/pixmaps/arduino-id
 sudo update-desktop-database
 
 echo "✅ Arduino IDE 2 has been successfully built and installed!"
-echo "👉 You can launch it from the main menu or with:"
+echo "👉 You can launch it from the main menu or by running:"
 echo "   /opt/arduino-ide-arm64/arduino-ide"
