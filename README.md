@@ -75,3 +75,29 @@ arduino-ide-arm64/
 ## 📜 License
 
 This project is open-source and available under the [MIT License](LICENSE).
+
+
+## error fix
+```bash
+sudo apt install -y python3 make g++ gcc libx11-dev libxtst-dev libxkbfile-dev
+npm config set python $(which python3)
+rm -rf node_modules
+rm package-lock.json yarn.lock
+npm cache clean --force
+yarn install --network-concurrency=4 --mutex network
+npm config set build_from_source false
+npm_config_build_from_source=false yarn install
+node -v
+python3 --version
+npm config get python
+sudo apt install -y python3 make g++ gcc libx11-dev libxtst-dev libxkbfile-dev
+npm config set python $(which python3)
+npm config set build_from_source false
+cd ~/arduino-ide # or your IDE folder
+rm -rf node_modules yarn.lock
+yarn install --network-concurrency=4 --mutex network
+export PYTHON=$(which python3)
+export npm_config_python=$(which python3)
+export npm_config_build_from_source=false
+yarn install --network-concurrency=4 --mutex network
+```
