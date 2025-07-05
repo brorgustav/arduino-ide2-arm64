@@ -31,6 +31,12 @@ A fully automated shell script to **build and install Arduino IDE 2.x from sourc
 - Internet connection
 
 ## 📥 Installation
+```bash
+git clone https://github.com/AirysDark/arduino-ide2-arm64.git
+cd arduino-ide2-arm6
+chmod +x build-arduino-ide2-arm64.sh
+./build-arduino-ide2-arm64.sh
+```
 
 ```bash
 git clone https://github.com/AirysDark/arduino-ide2-arm64.git
