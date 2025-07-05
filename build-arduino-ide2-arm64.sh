@@ -2,13 +2,13 @@
 set -e
 
 # 🧰 Arduino IDE 2.x Build Script for Raspberry Pi OS ARM64
-# Includes Go 1.22.3 install to fix toolchain directive errors
-# Author: AirysDark (with patches by ChatGPT)
+# Fully patched: workspace root, go.mod, node-gyp, python, and yarn compatibility
+# Author: AirysDark (finalized by ChatGPT)
 
 echo "🔧 Updating system..."
 sudo apt update && sudo apt upgrade -y
 
-echo "📦 Installing required build and runtime dependencies..."
+echo "📦 Installing build and runtime dependencies..."
 sudo apt install -y git curl build-essential \
     libgtk-3-dev libnss3 libxss1 libasound2 \
     desktop-file-utils libudev-dev xz-utils \
@@ -19,45 +19,44 @@ echo "⬆️  Installing recent Node.js v18..."
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 
-echo "📥 Installing Yarn package manager..."
+echo "📥 Installing Yarn globally..."
 sudo npm install -g yarn
 
 echo "🧹 Removing old Go installation if present..."
 sudo apt remove --purge -y golang-go || true
 sudo rm -rf /usr/local/go
 
-echo "⬇️  Downloading and installing Go 1.22.3 (ARM64)..."
+echo "⬇️  Installing Go 1.22.3 (ARM64)..."
 cd ~
 wget -q https://go.dev/dl/go1.22.3.linux-arm64.tar.gz
 sudo tar -C /usr/local -xzf go1.22.3.linux-arm64.tar.gz
 
-echo "🔧 Configuring Go environment variables..."
+echo "🔧 Setting up Go environment..."
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
 echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
 echo 'export GOPATH=$HOME/go' >> ~/.bashrc
 export PATH=$PATH:/usr/local/go/bin
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
-
 echo "✅ Go version: $(go version)"
 
 echo "📁 Cloning Arduino IDE source..."
 git clone --depth 1 https://github.com/AirysDark/arduino-ide.git arduino-ide-arm64
 cd arduino-ide-arm64
 
-echo "🧹 Cleaning previous installs (if any)..."
+echo "🧹 Cleaning any previous build cache..."
 rm -rf node_modules yarn.lock
 
-echo "🔧 Setting environment variables for node-gyp (Python 3)..."
+echo "🔧 Setting environment for node-gyp with Python 3..."
 export PYTHON=$(which python3)
 export npm_config_python=$(which python3)
 export npm_config_build_from_source=false
 
-echo "📦 Installing Node.js and Electron dependencies (with native module support)..."
+echo "📦 Installing dependencies with Yarn..."
 yarn install --network-concurrency=4 --mutex network
 
-echo "📦 Adding electron-builder for packaging..."
-yarn add electron-builder --dev
+echo "📦 Adding electron-builder to root workspace..."
+yarn add -W electron-builder --dev
 
 echo "⬇️  Downloading arduino-cli for ARM64..."
 curl -fsSL https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Linux_ARM64.tar.gz | tar -xz
@@ -92,5 +91,5 @@ sudo ln -sf /opt/arduino-ide-arm64/arduino-ide.png /usr/share/pixmaps/arduino-id
 sudo update-desktop-database
 
 echo "✅ Arduino IDE 2 has been successfully built and installed!"
-echo "👉 You can launch it from the main menu or by running:"
+echo "👉 Launch it from your menu or run:"
 echo "   /opt/arduino-ide-arm64/arduino-ide"
