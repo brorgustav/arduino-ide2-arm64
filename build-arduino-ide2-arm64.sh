@@ -2,8 +2,8 @@
 set -e
 
 # 🧰 Arduino IDE 2.x Build Script for Raspberry Pi OS ARM64
-# Author: AirysDark (refined by ChatGPT)
-# ✅ Final version with full native module support & node-gyp/Python fixes
+# Includes Go 1.22.3 install to fix toolchain directive errors
+# Author: AirysDark (with patches by ChatGPT)
 
 echo "🔧 Updating system..."
 sudo apt update && sudo apt upgrade -y
@@ -12,8 +12,8 @@ echo "📦 Installing required build and runtime dependencies..."
 sudo apt install -y git curl build-essential \
     libgtk-3-dev libnss3 libxss1 libasound2 \
     desktop-file-utils libudev-dev xz-utils \
-    python3 python3-pip golang-go libx11-dev \
-    libxtst-dev libxkbfile-dev make g++ gcc
+    python3 python3-pip libx11-dev libxtst-dev \
+    libxkbfile-dev make g++ gcc
 
 echo "⬆️  Installing recent Node.js v18..."
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
@@ -21,6 +21,25 @@ sudo apt install -y nodejs
 
 echo "📥 Installing Yarn package manager..."
 sudo npm install -g yarn
+
+echo "🧹 Removing old Go installation if present..."
+sudo apt remove --purge -y golang-go || true
+sudo rm -rf /usr/local/go
+
+echo "⬇️  Downloading and installing Go 1.22.3 (ARM64)..."
+cd ~
+wget -q https://go.dev/dl/go1.22.3.linux-arm64.tar.gz
+sudo tar -C /usr/local -xzf go1.22.3.linux-arm64.tar.gz
+
+echo "🔧 Configuring Go environment variables..."
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
+echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+export PATH=$PATH:/usr/local/go/bin
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+
+echo "✅ Go version: $(go version)"
 
 echo "📁 Cloning Arduino IDE source..."
 git clone --depth 1 https://github.com/AirysDark/arduino-ide.git arduino-ide-arm64
