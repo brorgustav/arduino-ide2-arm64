@@ -2,29 +2,25 @@
 set -e
 
 # 🧰 Arduino IDE 2.x Build Script for Raspberry Pi OS ARM64
-# Author: AirysDark (with fixes from ChatGPT)
-# Updated: Includes native-keymap build fixes
+# Author: AirysDark (refined by ChatGPT)
+# ✅ Final version with full native module support & node-gyp/Python fixes
 
 echo "🔧 Updating system..."
 sudo apt update && sudo apt upgrade -y
 
-echo "📦 Installing required packages..."
+echo "📦 Installing required build and runtime dependencies..."
 sudo apt install -y git curl build-essential \
     libgtk-3-dev libnss3 libxss1 libasound2 \
     desktop-file-utils libudev-dev xz-utils \
-    python3 python3-pip golang-go nodejs npm \
-    libx11-dev libxtst-dev libxkbfile-dev
+    python3 python3-pip golang-go libx11-dev \
+    libxtst-dev libxkbfile-dev make g++ gcc
 
 echo "⬆️  Installing recent Node.js v18..."
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 
-echo "📥 Installing Yarn..."
+echo "📥 Installing Yarn package manager..."
 sudo npm install -g yarn
-
-echo "🔧 Configuring Python for node-gyp..."
-npm config set python $(which python3)
-npm config set build_from_source false
 
 echo "📁 Cloning Arduino IDE source..."
 git clone --depth 1 https://github.com/AirysDark/arduino-ide.git arduino-ide-arm64
@@ -33,10 +29,15 @@ cd arduino-ide-arm64
 echo "🧹 Cleaning previous installs (if any)..."
 rm -rf node_modules yarn.lock
 
-echo "📦 Installing Node.js/Electron dependencies (with native module fixes)..."
+echo "🔧 Setting environment variables for node-gyp (Python 3)..."
+export PYTHON=$(which python3)
+export npm_config_python=$(which python3)
+export npm_config_build_from_source=false
+
+echo "📦 Installing Node.js and Electron dependencies (with native module support)..."
 yarn install --network-concurrency=4 --mutex network
 
-echo "📦 Adding electron-builder..."
+echo "📦 Adding electron-builder for packaging..."
 yarn add electron-builder --dev
 
 echo "⬇️  Downloading arduino-cli for ARM64..."
