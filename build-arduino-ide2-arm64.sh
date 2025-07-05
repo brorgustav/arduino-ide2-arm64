@@ -70,16 +70,16 @@ echo "🛠️  Building the Arduino IDE for Linux ARM64..."
 yarn electron:build --linux --arm64
 
 echo "📦 Installing IDE to /opt/arduino-ide-arm64..."
-sudo rm -rf /opt/arduino-ide-arm64
-sudo cp -r dist/linux-arm64-unpacked /opt/arduino-ide-arm64
+sudo rm -rf /opt/arduino-ide2-arm64
+sudo cp -r dist/linux-arm64-unpacked /opt/arduino-ide2-arm64
 
 echo "🖼️  Installing icon and desktop entry..."
-sudo cp resources/icons/icon.png /opt/arduino-ide-arm64/arduino-ide.png
+sudo cp resources/icons/icon.png /opt/arduino-ide2-arm64/arduino-ide.png
 sudo tee /usr/share/applications/arduino-ide.desktop > /dev/null <<EOF
 [Desktop Entry]
 Name=Arduino IDE 2
 Comment=Next-gen Arduino IDE
-Exec=/opt/arduino-ide-arm64/arduino-ide
+Exec=/opt/arduino-ide2-arm64/arduino-ide
 Icon=arduino-ide
 Terminal=false
 Type=Application
@@ -92,4 +92,4 @@ sudo update-desktop-database
 
 echo "✅ Arduino IDE 2 has been successfully built and installed!"
 echo "👉 Launch it from your menu or run:"
-echo "   /opt/arduino-ide-arm64/arduino-ide"
+echo "   /opt/arduino-ide2-arm64/arduino-ide"
