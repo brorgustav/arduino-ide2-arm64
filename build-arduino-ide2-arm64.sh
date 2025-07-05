@@ -90,6 +90,14 @@ EOF
 sudo ln -sf /opt/arduino-ide-arm64/arduino-ide.png /usr/share/pixmaps/arduino-ide.png
 sudo update-desktop-database
 
+echo "🧹 Removing source folder if present..."
+if [ -d "arduino-ide" ]; then
+  rm -rf arduino-ide
+  echo "✅ Removed ./arduino-ide build folder."
+else
+  echo "⚠️ No build folder (./arduino-ide) found to remove."
+fi
+
 echo "✅ Arduino IDE 2 has been successfully built and installed!"
 echo "👉 Launch it from your menu or run:"
 echo "   /opt/arduino-ide-arm64/arduino-ide"
