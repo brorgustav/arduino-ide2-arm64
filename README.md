@@ -1,0 +1,71 @@
+# 🛠️ Arduino IDE 2 ARM64 Builder
+
+A fully automated shell script to **build and install Arduino IDE 2.x from source** on **ARM64 Linux**, designed for **Raspberry Pi 4/5** and compatible boards.
+
+## 🚀 Features
+
+- **📦 Full Dependency Setup**  
+  Installs all required tools: Node.js, Go, Python3, GTK3, Electron, and more.
+
+- **⚡ Optimized Parallel Build**  
+  Faster installation using `yarn` with network concurrency.
+
+- **🔧 Builds From Source**  
+  - Backend (`arduino-cli`)
+  - Frontend (Electron UI)
+
+- **📁 Installs to `/opt/arduino-ide-arm64`**
+
+- **🖼️ Desktop & Start Menu Integration**  
+  Adds application launcher and icon to your menu automatically.
+
+- **🧹 Includes Uninstall Script**  
+  Easily remove IDE, icon, and source with one command.
+
+- **🧪 Raspberry Pi 64-bit Ready**
+
+## 📋 Requirements
+
+- ARM64-based Linux (e.g. Raspberry Pi OS 64-bit)
+- ~3GB free space
+- Internet connection
+
+## 📥 Installation
+
+```bash
+git clone https://github.com/AirysDark/arduino-ide2-arm64.git
+```
+## Change directory
+```
+cd arduino-ide-arm64
+```
+## Exacute script
+```
+chmod +x build-arduino-ide2-arm64.sh
+./build-arduino-ide2-arm64.sh
+```
+
+## 🗑️ Uninstallation
+
+```bash
+chmod +x uninstall-arduino-ide2-arm64.sh
+./uninstall-arduino-ide2-arm64.sh
+```
+
+## 📁 File Structure
+
+```
+arduino-ide-arm64/
+├── build-arduino-ide2-arm64.sh       # Main build + install script
+├── uninstall-arduino-ide2-arm64.sh   # Cleanup script
+└── README.md
+```
+
+## 🧑‍💻 Credits
+
+- Based on [arduino/arduino-ide](https://github.com/arduino/arduino-ide)
+- Script by: Your Name or GitHub username
+
+## 📜 License
+
+This project is open-source and available under the [MIT License](LICENSE).
