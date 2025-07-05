@@ -41,8 +41,8 @@ export GOPATH=$HOME/go
 echo "✅ Go version: $(go version)"
 
 echo "📁 Cloning Arduino IDE source..."
-git clone --depth 1 https://github.com/AirysDark/arduino-ide.git arduino-ide-arm64
-cd arduino-ide-arm64
+git clone --depth 1 https://github.com/AirysDark/arduino-ide.git arduino-ide2-arm64
+cd arduino-ide2-arm64
 
 echo "🧹 Cleaning any previous build cache..."
 rm -rf node_modules yarn.lock
