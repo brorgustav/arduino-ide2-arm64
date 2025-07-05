@@ -37,7 +37,7 @@ git clone https://github.com/AirysDark/arduino-ide2-arm64.git
 ```
 ## Change directory
 ```
-cd arduino-ide-arm64
+cd arduino-ide2-arm64
 ```
 ## Exacute script
 ```
