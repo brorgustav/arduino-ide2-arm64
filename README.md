@@ -41,7 +41,7 @@ chmod +x build-arduino-ide2-arm64.sh
 ```
 
 ```bash
-git clone https://github.com/AirysDark/arduino-ide2-arm64.git
+git clone https://github.com/brorgustav/arduino-ide2-arm64.git
 ```
 ## Change directory
 ```
