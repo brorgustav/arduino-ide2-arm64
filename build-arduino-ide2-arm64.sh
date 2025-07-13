@@ -10,7 +10,7 @@ sudo apt update && sudo apt upgrade -y
 
 echo "📦 Installing required dependencies..."
 sudo apt install -y git curl build-essential \
-    libgtk-3-dev libnss3 libxss1 libasound2 \
+    libgtk-3-dev libnss3 libxss1 libasound2t64 \
     desktop-file-utils libudev-dev xz-utils \
     python3 python3-pip libx11-dev libxtst-dev \
     libxkbfile-dev make g++ gcc wget
